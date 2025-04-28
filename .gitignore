@@ -1,0 +1,4 @@
+!.gitignore
+!.gitattributes
+Thumbs.db
+.DS_Store
