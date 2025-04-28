@@ -1,0 +1,20 @@
+/* styles admin ales agglo empty custom */
+
+.aec_field,
+.aec_input-field,
+.aec_textarea-field,
+.aec_attachment-field {
+	margin-bottom: 1rem;
+}
+.aec_attachment-field label {
+	display: block;
+	margin-bottom: 0.4rem;
+}
+.aec_attachment-field span {
+	display: block;
+	margin-bottom: 0.6rem;
+}
+.aec_attachment-field button {
+	display: inline-block;
+	margin-right: 0.6rem;
+}
