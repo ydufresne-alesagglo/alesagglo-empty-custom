@@ -86,6 +86,6 @@ function aec_init() {
 /*
  * get preview template
  */
-function aec_get_preview_template_part() {
+function aec_get_custom_preview_template_part() {
 	Custom::get_preview_template_part();
 }

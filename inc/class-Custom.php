@@ -168,7 +168,7 @@ class Custom {
 			isset($_GET[self::TAXO]) &&
 			!empty($_GET[self::TAXO])
 		) {
-			$query->query_vars['category_name'] = sanitize_text_field($_GET[self::TAXO]);
+			$query->query_vars[self::TAXO] = sanitize_text_field($_GET[self::TAXO]);
 		}
 	}
 

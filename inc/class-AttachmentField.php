@@ -1,6 +1,8 @@
 <?php
 require_once AEC_PATH . 'inc/class-Field.php';
-
+/**
+ * Attachment file field class
+ */
 class AttachmentField extends Field {
 
 	protected array $allowed_types;

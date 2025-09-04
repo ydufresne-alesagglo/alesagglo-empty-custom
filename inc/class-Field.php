@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Top class for all form fields
+ */
 abstract class Field {
 
 	protected const PREFIX = AEC_PREFIX;

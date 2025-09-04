@@ -1,7 +1,8 @@
 // scripts admin ales agglo empty custom
 
 document.addEventListener("DOMContentLoaded", function () {
-	const prefix = (typeof settings !== 'undefined' && settings.prefix) ? settings.prefix : '';
+
+	const prefix = (settings && typeof settings == 'object' && settings.prefix) ? settings.prefix : '';
 
 	const fields = document.querySelectorAll('.'+prefix+'attachment-field');
 

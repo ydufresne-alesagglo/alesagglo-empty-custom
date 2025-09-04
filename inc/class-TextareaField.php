@@ -1,6 +1,8 @@
 <?php
 require_once AEC_PATH . 'inc/class-Field.php';
-
+/**
+ * Textarea field class
+ */
 class TextareaField extends Field {
 
 	public function __construct(string $meta_key, string $label) {

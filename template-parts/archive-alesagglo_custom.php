@@ -13,7 +13,7 @@
 			<div class="archive-list" role="feed" aria-label="Liste des archives">
 			<?php while ( have_posts() ) :
 				the_post();
-				aec_get_preview_template_part();
+				aec_get_custom_preview_template_part();
 			endwhile; ?>
 			</div>
 			<?php the_posts_navigation();
