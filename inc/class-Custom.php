@@ -50,7 +50,7 @@ class Custom {
 			'taxonomies'			=> array(self::TAXO),
 			'menu_icon'				=> 'dashicons-media-document',
 		);
-	
+
 		register_post_type(self::CPT, $args);
 	}
 
@@ -67,7 +67,7 @@ class Custom {
 			'add_new_item'		=> 'Ajouter une nouvelle catégorie',
 			'new_item_name'		=> 'Nom de la nouvelle catégorie',
 			'edit_item'			=> 'Modifier la catégorie',
-			'view_item'			=> 'Voir la catégorie',	
+			'view_item'			=> 'Voir la catégorie',
 			'update_item'		=> 'Mettre à jour la catégorie',
 			'search_items'		=> 'Rechercher une catégorie',
 		);
@@ -256,21 +256,21 @@ class Custom {
 		if (is_tax(self::TAXO)) {
 			$custom_template = 'template-parts/taxonomy-'.self::TAXO.'.php';
 		}
-	
+
 		if (!isset($custom_template)) {
 			return $template;
 		}
-	
+
 		$theme_template = locate_template($custom_template);
 		if ($theme_template) {
 			return $theme_template;
 		}
-	
+
 		$plugin_template = self::AEC_PATH . $custom_template;
 		if (file_exists($plugin_template)) {
 			return $plugin_template;
 		}
-	
+
 		return $template;
 	}
 

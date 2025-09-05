@@ -63,7 +63,7 @@ function aec_register_admin_scripts() {
 	wp_enqueue_script(AEC_PREFIX . 'scripts-admin', AEC_URL . 'assets/js/scripts-admin.js');
 	wp_localize_script(AEC_PREFIX . 'scripts-admin', 'settings', [
 		'prefix' => AEC_PREFIX,
-	]);	
+	]);
 	wp_enqueue_style(AEC_PREFIX . 'styles-admin', AEC_URL . 'assets/css/styles-admin.css');
 }
 

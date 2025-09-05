@@ -31,7 +31,7 @@ class Metabox {
 
 	public function add_field(Field $field): void {
 		$this->fields[] = $field;
-	}	
+	}
 
 	public function add_meta_box() {
 		add_meta_box(
