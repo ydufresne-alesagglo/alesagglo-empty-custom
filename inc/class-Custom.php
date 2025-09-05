@@ -138,8 +138,8 @@ class Custom {
 
 
 	/**
-	* filter admin list by taxonomy
-	*/
+	 * filter admin list by taxonomy
+	 */
 	public function filter_by_taxonomy() {
 		global $typenow;
 		if ($typenow !== self::CPT) return;
@@ -184,8 +184,8 @@ class Custom {
 
 
 	/**
-	* allow define custom post type as home
-	*/
+	 * allow define custom post type as home
+	 */
 	public function allow_define_as_home($pages, $args) {
 		if (is_admin()) {
 			$screen = get_current_screen();
@@ -205,8 +205,8 @@ class Custom {
 	}
 
 	/**
-	* display as home
-	*/
+	 * display as home
+	 */
 	public function display_as_home($query) {
 
 		if (is_admin() || !$query->is_main_query()) return;
@@ -229,8 +229,8 @@ class Custom {
 	}
 
 	/**
-	* remove slug for home
-	*/
+	 * remove slug for home
+	 */
 	public function remove_slug_for_home($post_link, $post) {
 		if ($post->post_type == self::CPT && intval($post->ID) == intval(get_option('page_on_front'))) {
 			return home_url('/');
@@ -239,8 +239,8 @@ class Custom {
 	}
 
 	/**
-	* redirect home to root
-	*/
+	 * redirect home to root
+	 */
 	public function redirect_home_to_root() {
 		if (is_singular(self::CPT)) {
 			$front_id = get_option('page_on_front');
