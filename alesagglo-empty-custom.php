@@ -69,7 +69,7 @@ function aec_register_admin_scripts() {
 
 
 /*
- * init custum post type
+ * init custom post type
  */
 add_action('init', 'aec_init');
 function aec_init() {

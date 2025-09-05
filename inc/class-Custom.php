@@ -174,7 +174,7 @@ class Custom {
 
 
 	/*
-	* allow define custum post type as home
+	* allow define custom post type as home
 	*/
 	public function allow_define_as_home($pages, $args) {
 		if (is_admin()) {
