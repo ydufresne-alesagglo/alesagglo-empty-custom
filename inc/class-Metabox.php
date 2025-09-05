@@ -1,8 +1,10 @@
 <?php
-require_once AEC_PATH . 'inc/class-Field.php';
 /**
  * Metabox class handling fields
  */
+
+namespace AlesAggloEmptyCustom;
+
 class Metabox {
 
 	private const PREFIX = AEC_PREFIX;

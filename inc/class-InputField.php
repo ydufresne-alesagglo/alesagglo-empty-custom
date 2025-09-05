@@ -1,8 +1,10 @@
 <?php
-require_once AEC_PATH . 'inc/class-Field.php';
 /**
  * Input field class
  */
+
+namespace AlesAggloEmptyCustom;
+
 class InputField extends Field {
 
 	private $input_type;

@@ -11,7 +11,7 @@
 		<div class="publi-content">
 			<?php the_excerpt(); ?>
 		</div>
-		<?php // add custom fields
+		<?php // add custom fields here
 		?>
 	</main>
 <?php get_footer();

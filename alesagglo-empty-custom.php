@@ -13,13 +13,14 @@ Text Domain: alesagglo-empty-custom
 defined('ABSPATH') || die();
 
 define('AEC_SLUG', 'alesagglo-empty-custom');
+define('AEC_SPACENAME', 'AlesAggloEmptyCustom');
 define('AEC_PREFIX', 'aec_');
 
 define('AEC_PATH', plugin_dir_path(__FILE__));
 define('AEC_URL', plugin_dir_url(__FILE__));
 
 
-/*
+/**
  *	activate / deactivate
  */
 register_activation_hook(__FILE__, 'aec_activate');
@@ -32,7 +33,7 @@ function aec_deactivate() {
 }
 
 
-/*
+/**
  *	uninstall
  */
 register_uninstall_hook(__FILE__, 'aec_uninstall');
@@ -41,7 +42,7 @@ function aec_uninstall() {
 }
 
 
-/*
+/**
  *	load dependencies
  */
 add_action('plugins_loaded', 'aec_load_dependencies');
@@ -68,7 +69,7 @@ function aec_register_admin_scripts() {
 }
 
 
-/*
+/**
  * init custom post type
  */
 add_action('init', 'aec_init');
@@ -83,7 +84,7 @@ function aec_init() {
 }
 
 
-/*
+/**
  * get preview template
  */
 function aec_get_custom_preview_template_part() {

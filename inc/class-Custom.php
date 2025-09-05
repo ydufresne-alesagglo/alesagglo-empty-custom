@@ -1,8 +1,18 @@
 <?php
-require_once AEC_PATH . 'inc/class-Metabox.php';
-require_once AEC_PATH . 'inc/class-InputField.php';
-require_once AEC_PATH . 'inc/class-TextareaField.php';
-require_once AEC_PATH . 'inc/class-AttachmentField.php';
+/**
+ * Custom post type class
+ */
+
+if (!class_exists('AlesAggloEmptyCustom\Metabox')) require_once AEC_PATH . 'inc/class-Metabox.php';
+if (!class_exists('AlesAggloEmptyCustom\Field')) require_once AEC_PATH . 'inc/class-Field.php';
+if (!class_exists('AlesAggloEmptyCustom\InputField')) require_once AEC_PATH . 'inc/class-InputField.php';
+if (!class_exists('AlesAggloEmptyCustom\TextareaField')) require_once AEC_PATH . 'inc/class-TextareaField.php';
+if (!class_exists('AlesAggloEmptyCustom\AttachmentField')) require_once AEC_PATH . 'inc/class-AttachmentField.php';
+
+use AlesAggloEmptyCustom\Metabox;
+use AlesAggloEmptyCustom\InputField;
+use AlesAggloEmptyCustom\TextareaField;
+use AlesAggloEmptyCustom\AttachmentField;
 
 class Custom {
 
@@ -10,7 +20,7 @@ class Custom {
 	public const TAXO = 'alesagglo_custom_category';
 	private const AEC_PATH = AEC_PATH;
 
-	/*
+	/**
 	 * register custom post type
 	 */
 	public function register_custom() {
@@ -54,7 +64,7 @@ class Custom {
 		register_post_type(self::CPT, $args);
 	}
 
-	/*
+	/**
 	 * register custom taxonomy
 	 */
 	public function register_custom_category() {
@@ -91,7 +101,7 @@ class Custom {
 	}
 
 
-	/*
+	/**
 	 * define metabox
 	 */
 	public function define_metabox() {
@@ -100,7 +110,7 @@ class Custom {
 	}
 
 
-	/*
+	/**
 	 * register hooks
 	 */
 	public function register_hooks() {
@@ -127,7 +137,7 @@ class Custom {
 	}
 
 
-	/*
+	/**
 	* filter admin list by taxonomy
 	*/
 	public function filter_by_taxonomy() {
@@ -173,7 +183,7 @@ class Custom {
 	}
 
 
-	/*
+	/**
 	* allow define custom post type as home
 	*/
 	public function allow_define_as_home($pages, $args) {
@@ -194,7 +204,7 @@ class Custom {
 		return $pages;
 	}
 
-	/*
+	/**
 	* display as home
 	*/
 	public function display_as_home($query) {
@@ -218,7 +228,7 @@ class Custom {
 		}
 	}
 
-	/*
+	/**
 	* remove slug for home
 	*/
 	public function remove_slug_for_home($post_link, $post) {
@@ -228,7 +238,7 @@ class Custom {
 		return $post_link;
 	}
 
-	/*
+	/**
 	* redirect home to root
 	*/
 	public function redirect_home_to_root() {
@@ -242,7 +252,7 @@ class Custom {
 	}
 
 
-	/*
+	/**
 	 * load template
 	 */
 	public function load_template($template) {
@@ -274,7 +284,7 @@ class Custom {
 		return $template;
 	}
 
-	/*
+	/**
 	 * get preview template
 	 */
 	public static function get_preview_template_part() {

@@ -2,6 +2,9 @@
 /**
  * Top class for all form fields
  */
+
+namespace AlesAggloEmptyCustom;
+
 abstract class Field {
 
 	protected const PREFIX = AEC_PREFIX;

@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Indique si le post est un custom post type
  */
 if ( ! function_exists( 'is_custom_post_type' ) ) {
@@ -21,7 +21,7 @@ if ( ! function_exists( 'is_custom_post_type' ) ) {
 }
 
 
-/*
+/**
  * Retourne de type de taxonomy
  */
 if ( ! function_exists( 'get_taxonomy_type' ) ) {
