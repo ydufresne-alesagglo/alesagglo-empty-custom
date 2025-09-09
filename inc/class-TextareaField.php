@@ -27,7 +27,8 @@ class TextareaField extends Field {
 	public function render_html($post) {
 		$value = get_post_meta($post->ID, $this->meta_key, true);
 
-		$html = '<div class="'.parent::PREFIX.'textarea-field"><label for="' . esc_attr($this->meta_key) . '">' . esc_html($this->label) . '</label><br>';
+		$html = '<div class="'.parent::PREFIX.'textarea-field">';
+		$html .= '<label for="' . esc_attr($this->meta_key) . '">' . esc_html($this->label) . '</label><br>';
 		ob_start();
 		wp_editor(
 			$value,
