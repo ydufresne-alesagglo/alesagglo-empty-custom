@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-	const prefix = (settings && typeof settings == 'object' && settings.prefix) ? settings.prefix : '';
+	const prefix = (aec_settings && typeof aec_settings == 'object' && aec_settings.prefix) ? aec_settings.prefix : '';
 
 	const fields = document.querySelectorAll('.'+prefix+'attachment-field');
 
