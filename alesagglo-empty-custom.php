@@ -76,11 +76,11 @@ function aec_register_admin_scripts() {
 add_action('init', 'aec_init');
 function aec_init() {
 	if (class_exists('Custom')) {
-		$plubli = new Custom();
-		$plubli->register_custom_category();
-		$plubli->register_custom();
-		$plubli->register_hooks();
-		$plubli->define_metabox();
+		$custom = new Custom();
+		$custom->register_taxonomy();
+		$custom->register_post_type();
+		$custom->register_hooks();
+		$custom->define_metabox();
 	}
 }
 

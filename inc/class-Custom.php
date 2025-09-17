@@ -23,7 +23,7 @@ class Custom {
 	/**
 	 * register custom post type
 	 */
-	public function register_custom() {
+	public function register_post_type() {
 
 		$labels = array(
 			'name'					=> 'Customs',
@@ -67,7 +67,7 @@ class Custom {
 	/**
 	 * register custom taxonomy
 	 */
-	public function register_custom_category() {
+	public function register_taxonomy() {
 
 		$labels = array(
 			'name'				=> 'Catégories',
