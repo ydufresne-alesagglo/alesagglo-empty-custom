@@ -18,7 +18,7 @@ class Custom {
 
 	public const CPT = 'alesagglo_custom';
 	public const TAXO = 'alesagglo_custom_category';
-	private const AEC_PATH = AEC_PATH;
+	private const PATH = AEC_PATH;
 
 	/**
 	 * register custom post type
@@ -276,7 +276,7 @@ class Custom {
 			return $theme_template;
 		}
 
-		$plugin_template = self::AEC_PATH . $custom_template;
+		$plugin_template = self::PATH . $custom_template;
 		if (file_exists($plugin_template)) {
 			return $plugin_template;
 		}
@@ -293,7 +293,7 @@ class Custom {
 		if ($theme_template) {
 			get_template_part('template-parts/preview', self::CPT);
 		} else {
-			include self::AEC_PATH . 'template-parts/preview-' . self::CPT . '.php';
+			include self::PATH . 'template-parts/preview-' . self::CPT . '.php';
 		}
 	}
 }
