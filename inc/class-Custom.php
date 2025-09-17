@@ -56,7 +56,7 @@ class Custom {
 			'exclude_from_search'	=> false,
 			'rewrite'				=> array('slug' => 'customs', 'with_front' => false),
 			'capability_type'		=> 'post',
-			'supports'				=> array('title', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields'),
+			'supports'				=> array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields'),
 			'taxonomies'			=> array(self::TAXO),
 			'menu_icon'				=> 'dashicons-media-document',
 		);
