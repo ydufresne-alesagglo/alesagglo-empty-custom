@@ -9,7 +9,7 @@
 			</h1>
 		</header>
 		<div class="custom-content">
-			<?php the_excerpt(); ?>
+			<?php the_content(); ?>
 		</div>
 		<?php // add custom fields here
 		?>
