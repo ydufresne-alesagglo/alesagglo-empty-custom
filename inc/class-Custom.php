@@ -70,7 +70,7 @@ class Custom {
 	public function register_taxonomy() {
 
 		$labels = array(
-			'name'				=> 'Catégories',
+			'name'				=> 'Catégories des customs',
 			'singular_name'		=> 'Catégorie des customs',
 			'menu_name'			=> 'Catégories',
 			'all_items'			=> 'Tous les catégories',
