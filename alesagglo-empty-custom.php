@@ -58,12 +58,14 @@ function aec_load_dependencies() {
 }
 function aec_register_scripts() {
 	wp_enqueue_script(AEC_PREFIX . 'scripts', AEC_URL . 'assets/js/scripts.js');
+	wp_localize_script(AEC_PREFIX . 'scripts', 'aec_settings', [
+	]);
 	wp_enqueue_style(AEC_PREFIX . 'styles', AEC_URL . 'assets/css/styles.css');
 }
 function aec_register_admin_scripts() {
 	wp_enqueue_media();
 	wp_enqueue_script(AEC_PREFIX . 'scripts-admin', AEC_URL . 'assets/js/scripts-admin.js');
-	wp_localize_script(AEC_PREFIX . 'scripts-admin', 'aec_settings', [
+	wp_localize_script(AEC_PREFIX . 'scripts-admin', 'aec_settings_admin', [
 		'prefix' => AEC_PREFIX,
 	]);
 	wp_enqueue_style(AEC_PREFIX . 'styles-admin', AEC_URL . 'assets/css/styles-admin.css');
