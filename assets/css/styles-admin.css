@@ -3,18 +3,53 @@
 .aec_field,
 .aec_input-field,
 .aec_textarea-field,
-.aec_attachment-field {
+.aec_attachment-field,
+.aec_post-field {
 	margin-bottom: 1rem;
 }
-.aec_attachment-field label {
+
+.aec_attachment-field label,
+.aec__post-field label {
 	display: block;
 	margin-bottom: 0.4rem;
 }
-.aec_attachment-field span {
+.aec_attachment-field span,
+.aec_post-field span {
 	display: block;
 	margin-bottom: 0.6rem;
 }
-.aec_attachment-field button {
+.aec_attachment-field button,
+.aec_post-field button {
 	display: inline-block;
 	margin-right: 0.6rem;
+	cursor: pointer;
+}
+
+.aec_post-search-container {
+	border: 1px solid #ccc;
+	background: #fff;
+	padding: 0.8rem;
+	margin-top: 0.6rem;
+	max-width: 40rem;
+	position: relative;
+	z-index: 10;
+}
+.aec_post-search-header {
+	display: flex;
+	justify-content: space-between;
+}
+.aec_post-search-results {
+	list-style: none;
+	margin: 0.6rem 0 0 0;
+	padding: 0;
+	max-height: 20rem;
+	overflow-y: auto;
+}
+.aec_post-search-results li {
+	padding: 0.4rem 0.6rem;
+	margin: 0;
+	cursor: pointer;
+}
+.aec_post-search-results li:hover {
+	background: #f0f0f0;
 }

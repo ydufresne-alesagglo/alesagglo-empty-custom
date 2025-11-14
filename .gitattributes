@@ -1,5 +1,9 @@
 * text=auto
+.gitignore eol=lf
+.gitattributes eol=lf
 *.php text eol=lf
-*.js  text eol=lf
+*.js text eol=lf
 *.css text eol=lf
 *.html text eol=lf
+*.md text eol=lf
+*.svg text eol=lf

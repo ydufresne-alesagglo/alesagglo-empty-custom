@@ -13,7 +13,7 @@ class InputField extends Field {
 
 	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', $default_value = '') {
 
-		$allowed_types = ['text', 'number', 'url', 'email', 'password', 'checkbox', 'color', 'date'];
+		$allowed_types = ['text', 'number', 'url', 'email', 'password', 'checkbox', 'color', 'date', 'datetime-local', 'time'];
 		if (!in_array($input_type, $allowed_types, true)) {
 			$this->input_type = false;
 		} else {

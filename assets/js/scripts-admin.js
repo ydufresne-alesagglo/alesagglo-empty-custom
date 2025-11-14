@@ -1,5 +1,8 @@
 // scripts admin ales agglo empty custom
 
+/**
+ * Attachment field script
+ */
 document.addEventListener("DOMContentLoaded", function () {
 
 	const prefix = (aec_settings_admin && typeof aec_settings_admin == 'object' && aec_settings_admin.prefix) ? aec_settings_admin.prefix : '';
@@ -46,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			frame.on('select', function () {
 				const attachment = frame.state().get('selection').first().toJSON();
 				inputMetaKey.value = attachment.id;
-				link.innerHTML = `<a href="${attachment.url}">${attachment.filename}</a>`;
+				link.innerHTML = `<a href="${attachment.url}" target="_blank">${attachment.filename}</a>`;
 			});
 
 			frame.open();
@@ -55,7 +58,112 @@ document.addEventListener("DOMContentLoaded", function () {
 		removeBtn.addEventListener('click', function (e) {
 			e.preventDefault();
 			inputMetaKey.value = '';
-			link.innerHTML = '';
+			link.innerHTML = '&nbsp;';
+		});
+	});
+});
+
+
+/**
+ * Post field script
+ */
+document.addEventListener("DOMContentLoaded", function () {
+
+	const prefix = (aec_settings_admin && typeof aec_settings_admin == 'object' && aec_settings_admin.prefix) ? aec_settings_admin.prefix : '';
+
+	const fields = document.querySelectorAll('.'+prefix+'post-field');
+
+	fields.forEach(field => {
+		const metaKey = field.getAttribute('data-meta-key');
+		const postType = field.getAttribute('data-post-type');
+
+		const inputMetaKey = field.querySelector('#'+prefix+metaKey);
+		const link = field.querySelector('.'+prefix+'post-field-link');
+		const selectBtn = field.querySelector('.'+prefix+'post-field-select');
+		const removeBtn = field.querySelector('.'+prefix+'post-field-remove');
+		const closeBtn = field.querySelector('.' + prefix + 'post-search-close');
+		const container = field.querySelector('.' + prefix + 'post-search-container');
+		const search = field.querySelector('.' + prefix + 'post-search-input');
+		const results = field.querySelector('.' + prefix + 'post-search-results');
+
+		selectBtn.addEventListener('click', function (e) {
+			e.preventDefault();
+			const isVisible = container.style.display === 'block';
+			container.style.display = isVisible ? 'none' : 'block';
+			if (!isVisible) { // visibility just changed to visible
+				search.focus();
+			} else {
+				results.innerHTML = '';
+				search.value = '';
+			}
+		});
+
+		removeBtn.addEventListener('click', function (e) {
+			e.preventDefault();
+			inputMetaKey.value = '';
+			link.innerHTML = '&nbsp;';
+			container.style.display = 'none';
+			results.innerHTML = '';
+			search.value = '';
+		});
+
+		closeBtn.addEventListener('click', function (e) {
+			e.preventDefault();
+			container.style.display = 'none';
+			results.innerHTML = '';
+			search.value = '';
+		});
+
+		let timer;
+
+		search.addEventListener('input', function () {
+			clearTimeout(timer);
+			const term = search.value.trim();
+			if (term.length < 3) {
+				results.innerHTML = '';
+				return;
+			}
+
+			timer = setTimeout(async () => {
+				const url = `/wp-json/wp/v2/${postType}?search=${encodeURIComponent(term)}&per_page=12`;
+				try {
+					const res = await fetch(url);
+					if (!res.ok) return;
+
+					const data = await res.json();
+					results.innerHTML = '';
+
+					if (data.length === 0) {
+						const li = document.createElement('li');
+						li.textContent = 'Aucun résultat';
+						li.style.cursor = 'default';
+						results.appendChild(li);
+						return;
+					}
+
+					data.forEach(post => {
+						const li = document.createElement('li');
+						li.textContent = post.title.rendered || '(sans titre)';
+						li.dataset.id = post.id;
+						results.appendChild(li);
+					});
+				} catch (err) {
+					console.error('Erreur recherche via API :', err);
+				}
+			}, 500);
+		});
+
+		results.addEventListener('click', function (e) {
+			if (e.target.tagName !== 'LI' || !e.target.dataset.id) return;
+
+			const postId = e.target.dataset.id;
+			const postTitle = e.target.textContent;
+
+			inputMetaKey.value = postId;
+			link.innerHTML = `<a href="${window.location.origin}/?p=${postId}" target="_blank">${postTitle}</a>`;
+			container.style.display = 'none';
+			results.innerHTML = '';
+			search.value = '';
 		});
 	});
 });

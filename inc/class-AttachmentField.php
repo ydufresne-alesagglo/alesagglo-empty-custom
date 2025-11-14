@@ -23,9 +23,9 @@ class AttachmentField extends Field {
 		$allowed_types_json = (!empty($this->allowed_types) ? htmlspecialchars(json_encode($this->allowed_types), ENT_QUOTES, 'UTF-8') : '');
 
 		$html  = '<div class="'.parent::PREFIX.'attachment-field" data-meta-key="' . esc_attr($this->meta_key) . '" data-allowed-types="' . $allowed_types_json . '">';
-		$html .= '<label>' . esc_html($this->label) . '</label>&nbsp;';
-		$html .= '<input type="hidden" name="' . esc_attr($this->meta_key) . '" id="' . parent::PREFIX . esc_attr($this->meta_key) . '" value="' . esc_attr($value) . '"/>';
-		$html .= '<span class="'.parent::PREFIX.'attachment-field-link">'.$link.'</span>&nbsp;';
+		$html .= '<label>' . esc_html($this->label) . '</label>';
+		$html .= '<input type="hidden" name="' . esc_attr($this->meta_key) . '" id="' . parent::PREFIX . esc_attr($this->meta_key) . '" value="' . esc_attr($value) . '">';
+		$html .= '<span class="'.parent::PREFIX.'attachment-field-link">'.$link.'</span>';
 		$html .= '<button type="button" class="'.parent::PREFIX.'attachment-field-select">Select</button>';
 		$html .= '<button type="button" class="'.parent::PREFIX.'attachment-field-remove">Remove</button>';
 		$html .= '</div>';
