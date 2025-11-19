@@ -13,7 +13,7 @@ if ( ! function_exists( 'is_custom_post_type' ) ) {
 		$custom_types      = array_keys( $all_custom_post_types );
 		$current_post_type = get_post_type( $post );
 
-		if ( ! $current_post_type )
+		if ( !$current_post_type )
 			return FALSE;
 
 		return in_array( $current_post_type, $custom_types );
