@@ -30,9 +30,12 @@ class Metabox {
 		add_action('save_post_' . $this->post_type, [$this, 'save_meta_box']);
 	}
 
-
-	public function add_field(Field $field): void {
+	public function add_field(Field $field) {
 		$this->fields[] = $field;
+	}
+
+	public function get_fields(): array {
+		return $this->fields;
 	}
 
 	public function add_meta_box() {

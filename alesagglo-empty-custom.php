@@ -81,8 +81,8 @@ function aec_init() {
 		$custom = new Custom();
 		$custom->register_taxonomy();
 		$custom->register_post_type();
-		$custom->register_hooks();
 		$custom->define_metabox();
+		$custom->register_hooks();
 	}
 }
 

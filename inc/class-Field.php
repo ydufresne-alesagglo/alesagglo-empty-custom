@@ -17,6 +17,14 @@ abstract class Field {
 		$this->label = $label;
 	}
 
+	function get_meta_key() {
+		return $this->meta_key;
+	}
+
+	function get_label() {
+		return $this->label;
+	}
+
 	public function save($post_id) {
 		if (!isset($_POST[$this->meta_key])) {
 			return;

@@ -10,8 +10,10 @@ class InputField extends Field {
 	private $input_type;
 	private $placeholder;
 	private $default_value;
+	private $required;
+	private $admin_column;
 
-	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', $default_value = '') {
+	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', $default_value = '', $required = false, $admin_column = false) {
 
 		$allowed_types = ['text', 'number', 'url', 'email', 'password', 'checkbox', 'color', 'date', 'datetime-local', 'time'];
 		if (!in_array($input_type, $allowed_types, true)) {
@@ -22,8 +24,18 @@ class InputField extends Field {
 
 		$this->placeholder = $placeholder;
 		$this->default_value = $default_value;
+		$this->required = $required;
+		$this->admin_column = $admin_column;
 
 		parent::__construct($meta_key, $label);
+	}
+
+	public function get_input_type() {
+		return $this->input_type;
+	}
+
+	public function is_admin_column() {
+		return $this->admin_column;
 	}
 
 	public function save($post_id) {
@@ -63,7 +75,9 @@ class InputField extends Field {
 		$html = '<div class="'.parent::PREFIX.'input-field">';
 		$html .= '<label for="' . esc_attr($this->meta_key) . '">' . esc_html($this->label) . '</label>&nbsp;';
 		$html .= '<input type="' . esc_attr($this->input_type) . '" name="' . esc_attr($this->meta_key) . '" id="' . esc_attr($this->meta_key) . '"';
-		$html .= ($this->input_type == 'checkbox' ? ($value ? ' checked>' : '>') : ' value="' . esc_attr($value) . '" placeholder="' . esc_attr($this->placeholder) . '">');
+		$html .= ($this->input_type == 'checkbox' ? ($value ? ' checked' : '') : ' value="' . esc_attr($value) . '" placeholder="' . esc_attr($this->placeholder) . '"');
+		$html .= $this->required ? ' required' : '';
+		$html .= '>';
 		$html .= '</div>';
 
 		return $html;

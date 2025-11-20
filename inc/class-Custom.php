@@ -1,24 +1,27 @@
 <?php
 /**
- * Custom post type class
+ * Custom CPT class
  */
 
-if (!class_exists('AlesAggloEmptyCustom\Metabox')) require_once AEC_PATH . 'inc/class-Metabox.php';
-if (!class_exists('AlesAggloEmptyCustom\Field')) require_once AEC_PATH . 'inc/class-Field.php';
-if (!class_exists('AlesAggloEmptyCustom\InputField')) require_once AEC_PATH . 'inc/class-InputField.php';
-if (!class_exists('AlesAggloEmptyCustom\TextareaField')) require_once AEC_PATH . 'inc/class-TextareaField.php';
-if (!class_exists('AlesAggloEmptyCustom\AttachmentField')) require_once AEC_PATH . 'inc/class-AttachmentField.php';
+require_once AEC_PATH . 'inc/class-Metabox.php';
+require_once AEC_PATH . 'inc/class-Field.php';
+require_once AEC_PATH . 'inc/class-InputField.php';
+require_once AEC_PATH . 'inc/class-TextareaField.php';
+require_once AEC_PATH . 'inc/class-AttachmentField.php';
+require_once AEC_PATH . 'inc/class-PostField.php';
 
 use AlesAggloEmptyCustom\Metabox;
 use AlesAggloEmptyCustom\InputField;
 use AlesAggloEmptyCustom\TextareaField;
 use AlesAggloEmptyCustom\AttachmentField;
+use AlesAggloEmptyCustom\PostField;
 
 class Custom {
 
 	public const CPT = 'alesagglo_custom';
 	public const TAXO = 'alesagglo_custom_category';
 	private const PATH = AEC_PATH;
+	private array $boxes = array();
 
 	/**
 	 * register custom post type
@@ -105,8 +108,9 @@ class Custom {
 	 * define metabox
 	 */
 	public function define_metabox() {
-		$metabox = new Metabox('custom_metabox_sample', 'Sample', self::CPT);
-		$metabox->add_field(new InputField('custom_field_sample', 'Sample', 'number'));
+		$metabox = new Metabox('custom_metabox_sample', 'Sample Box', self::CPT);
+		$metabox->add_field(new InputField('custom_field_sample', 'Sample Field', 'text', '', '', false, true));
+		$this->boxes[] = $metabox;
 	}
 
 
@@ -119,6 +123,10 @@ class Custom {
 			// filter
 			add_action('restrict_manage_posts', array($this, 'filter_by_taxonomy'));
 			add_filter('parse_query', array($this, 'apply_filter_by_taxonomy_query'));
+
+			// manage columns
+			add_filter('manage_'.self::CPT.'_posts_columns', array($this, 'register_admin_columns'));
+			add_action('manage_'.self::CPT.'_posts_custom_column', array($this, 'display_admin_columns'), 10, 2);
 
 			// home
 			add_filter('get_pages', array($this, 'allow_define_as_home'), 10, 2);
@@ -168,6 +176,10 @@ class Custom {
 			echo '</select>';
 		}
 	}
+
+	/**
+	 * apply filter by taxonomy in admin list
+	 */
 	public function apply_filter_by_taxonomy_query($query) {
 		global $pagenow;
 
@@ -179,6 +191,77 @@ class Custom {
 			!empty($_GET[self::TAXO])
 		) {
 			$query->query_vars[self::TAXO] = sanitize_text_field($_GET[self::TAXO]);
+		}
+	}
+
+
+	/**
+	 * register fields as new columns in admin list
+	 */
+	public function register_admin_columns($columns) {
+		error_log('register_admin_columns');
+
+		foreach ($this->boxes as $box) {
+			$fields = $box->get_fields();
+			foreach ($fields as $field) {
+				if($field instanceof InputField && $field->is_admin_column()) {
+					$columns[$field->get_meta_key()] = $field->get_label();
+				}
+			}
+		}
+		return $columns;
+	}
+
+
+	/**
+	 * display field values in new columns in admin list
+	 */
+	public function display_admin_columns($column_name, $post_id) {
+		error_log('display_admin_columns');
+
+		foreach ($this->boxes as $box) {
+			$fields = $box->get_fields();
+			foreach ($fields as $field) {
+				if($field instanceof InputField && $field->is_admin_column() && $column_name === $field->get_meta_key()) {
+
+					$input_type = $field->get_input_type();
+					$value = get_post_meta($post_id, $field->get_meta_key(), true);
+					if ($value) {
+						switch ($input_type) {
+							case 'text':
+							case 'number':
+								echo '<span class="text-input-field">'.esc_html($value).'</span>';
+								break;
+							case 'url':
+								echo '<span class="url-input-field"><a href="'.esc_url($value).'" target="_blank">'.esc_html($value).'</a></span>';
+								break;
+							case 'email':
+								echo '<span class="email-input-field"><a href="mailto:'.esc_attr($value).'">'.esc_html($value).'</a></span>';
+								break;
+							case 'password':
+								echo '<span class="password-input-field">'.str_repeat('*', strlen($value)).'</span>';
+								break;
+							case 'checkbox':
+								echo '<span class="checkbox-input-field">Ok</span>';
+								break;
+							case 'color':
+								echo '<span class="color-input-field" style="color:'.esc_attr($value).';">'.esc_attr($value).'</span>';
+								break;
+							case 'date':
+								echo '<span class="date-input-field">'.esc_html(date_format(date_create($value), 'd/m/Y')).'</span>';
+								break;
+							case 'datetime-local':
+								echo '<span class="datetime-input-field">'.esc_html(date_format(date_create($value), 'd/m/Y H\hi')).'</span>';
+								break;
+							case 'time':
+								echo '<span class="time-input-field">'.esc_html(date_format(date_create($value), 'H\hi')).'</span>';
+								break;
+						}
+					} else {
+						echo '&mdash;';
+					}
+				}
+			}
 		}
 	}
 
