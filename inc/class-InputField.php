@@ -48,6 +48,33 @@ class InputField extends Field {
 				update_post_meta($post_id, $this->meta_key, 1);
 			}
 			return;
+		} else
+		if($this->input_type == 'date') {
+			if (!isset($_POST[$this->meta_key])) {
+				delete_post_meta($post_id, $this->meta_key);
+			} else {
+				$date = new \DateTime($_POST[$this->meta_key]);
+				update_post_meta($post_id, $this->meta_key, $date->format('Y-m-d'));
+			}
+			return;
+		} else
+		if($this->input_type == 'datetime-local') {
+			if (!isset($_POST[$this->meta_key])) {
+				delete_post_meta($post_id, $this->meta_key);
+			} else {
+				$date = new \DateTime($_POST[$this->meta_key]);
+				update_post_meta($post_id, $this->meta_key, $date->format('Y-m-d H:i:s'));
+			}
+			return;
+		} else
+		if($this->input_type == 'time') {
+			if (!isset($_POST[$this->meta_key])) {
+				delete_post_meta($post_id, $this->meta_key);
+			} else {
+				$date = new \DateTime($_POST[$this->meta_key]);
+				update_post_meta($post_id, $this->meta_key, $date->format('H:i:s'));
+			}
+			return;
 		}
 
 		if (!isset($_POST[$this->meta_key])) {
