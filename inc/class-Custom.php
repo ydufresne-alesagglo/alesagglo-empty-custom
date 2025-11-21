@@ -23,6 +23,18 @@ class Custom {
 	private const PATH = AEC_PATH;
 	private array $boxes = array();
 
+
+	/**
+	 * constructor
+	 */
+	public function __construct() {
+		$this->register_taxonomy();
+		$this->register_post_type();
+		$this->define_metabox();
+		$this->register_hooks();
+	}
+
+
 	/**
 	 * register custom post type
 	 */

@@ -79,10 +79,6 @@ add_action('init', 'aec_init');
 function aec_init() {
 	if (class_exists('Custom')) {
 		$custom = new Custom();
-		$custom->register_taxonomy();
-		$custom->register_post_type();
-		$custom->define_metabox();
-		$custom->register_hooks();
 	}
 }
 
