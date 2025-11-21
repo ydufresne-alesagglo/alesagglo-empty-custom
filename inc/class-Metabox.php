@@ -56,7 +56,7 @@ class Metabox {
 	private function default_render($post) {
 		wp_nonce_field(self::PREFIX . $this->id . '_action', self::PREFIX . $this->id . '_nonce');
 
-		$html = '<div class="'.self::PREFIX . 'custom-metabox">';
+		$html = '<div class="'.self::PREFIX.'custom-metabox">';
 		foreach ($this->fields as $field) {
 			$html .= $field->render_html($post);
 		}

@@ -38,7 +38,7 @@ class PostField extends Field {
 
 		$html = '<div class="'.parent::PREFIX.'post-field" data-meta-key="' . esc_attr($this->meta_key) . '" data-post-type="' . esc_attr($this->post_type) . '">';
 		$html .= '<label>' . esc_html($this->label) . '</label>';
-		$html .= '<input type="hidden" name="' . esc_attr($this->meta_key) . '" id="' . parent::PREFIX . esc_attr($this->meta_key) . '" value="' . esc_attr($value) . '">';
+		$html .= '<input type="hidden" name="' . esc_attr($this->meta_key) . '" id="'.parent::PREFIX.esc_attr($this->meta_key) . '" value="' . esc_attr($value) . '">';
 		$html .= '<span class="'.parent::PREFIX.'post-field-link">'.$link.'</span>';
 		$html .= '<button type="button" class="'.parent::PREFIX.'post-field-select">Select</button>';
 		$html .= '<button type="button" class="'.parent::PREFIX.'post-field-remove">Remove</button>';

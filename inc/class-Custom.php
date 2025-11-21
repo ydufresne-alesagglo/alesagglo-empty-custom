@@ -21,6 +21,7 @@ class Custom {
 	public const CPT = 'alesagglo_custom';
 	public const TAXO = 'alesagglo_custom_category';
 	private const PATH = AEC_PATH;
+	private const PREFIX = AEC_PREFIX;
 	private array $boxes = array();
 
 
@@ -242,31 +243,31 @@ class Custom {
 						switch ($input_type) {
 							case 'text':
 							case 'number':
-								echo '<span class="text-input-field">'.esc_html($value).'</span>';
+								echo '<span class="'.self::PREFIX.'text-input-field">'.esc_html($value).'</span>';
 								break;
 							case 'url':
-								echo '<span class="url-input-field"><a href="'.esc_url($value).'" target="_blank">'.esc_html($value).'</a></span>';
+								echo '<span class="'.self::PREFIX.'url-input-field"><a href="'.esc_url($value).'" target="_blank">'.esc_html($value).'</a></span>';
 								break;
 							case 'email':
-								echo '<span class="email-input-field"><a href="mailto:'.esc_attr($value).'">'.esc_html($value).'</a></span>';
+								echo '<span class="'.self::PREFIX.'email-input-field"><a href="mailto:'.esc_attr($value).'">'.esc_html($value).'</a></span>';
 								break;
 							case 'password':
-								echo '<span class="password-input-field">'.str_repeat('*', strlen($value)).'</span>';
+								echo '<span class="'.self::PREFIX.'password-input-field">'.str_repeat('*', strlen($value)).'</span>';
 								break;
 							case 'checkbox':
-								echo '<span class="checkbox-input-field">Ok</span>';
+								echo '<span class="'.self::PREFIX.'checkbox-input-field">Ok</span>';
 								break;
 							case 'color':
-								echo '<span class="color-input-field" style="color:'.esc_attr($value).';">'.esc_attr($value).'</span>';
+								echo '<span class="'.self::PREFIX.'color-input-field" style="color:'.esc_attr($value).';">'.esc_attr($value).'</span>';
 								break;
 							case 'date':
-								echo '<span class="date-input-field">'.esc_html(date_format(date_create($value), 'd/m/Y')).'</span>';
+								echo '<span class="'.self::PREFIX.'date-input-field">'.esc_html(date_format(date_create($value), 'd/m/Y')).'</span>';
 								break;
 							case 'datetime-local':
-								echo '<span class="datetime-input-field">'.esc_html(date_format(date_create($value), 'd/m/Y H\hi')).'</span>';
+								echo '<span class="'.self::PREFIX.'datetime-input-field">'.esc_html(date_format(date_create($value), 'd/m/Y H\hi')).'</span>';
 								break;
 							case 'time':
-								echo '<span class="time-input-field">'.esc_html(date_format(date_create($value), 'H\hi')).'</span>';
+								echo '<span class="'.self::PREFIX.'time-input-field">'.esc_html(date_format(date_create($value), 'H\hi')).'</span>';
 								break;
 						}
 					} else {

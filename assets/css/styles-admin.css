@@ -53,3 +53,11 @@
 .aec_post-search-results li:hover {
 	background: #f0f0f0;
 }
+
+.aec_url-input-field {
+	max-width: 12rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline-block;
+}
