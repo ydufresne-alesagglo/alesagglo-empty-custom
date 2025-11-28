@@ -140,6 +140,8 @@ class Custom {
 			// manage columns
 			add_filter('manage_'.self::CPT.'_posts_columns', array($this, 'register_admin_columns'));
 			add_action('manage_'.self::CPT.'_posts_custom_column', array($this, 'display_admin_columns'), 10, 2);
+			add_filter('manage_edit-'.self::CPT.'_sortable_columns', array($this, 'register_sortable_columns'));
+			add_action('pre_get_posts', array($this, 'apply_sorting_columns'));
 
 			// home
 			add_filter('get_pages', array($this, 'allow_define_as_home'), 10, 2);
@@ -212,7 +214,6 @@ class Custom {
 	 * register fields as new columns in admin list
 	 */
 	public function register_admin_columns($columns) {
-		error_log('register_admin_columns');
 
 		foreach ($this->boxes as $box) {
 			$fields = $box->get_fields();
@@ -230,7 +231,6 @@ class Custom {
 	 * display field values in new columns in admin list
 	 */
 	public function display_admin_columns($column_name, $post_id) {
-		error_log('display_admin_columns');
 
 		foreach ($this->boxes as $box) {
 			$fields = $box->get_fields();
@@ -273,6 +273,78 @@ class Custom {
 					} else {
 						echo '&mdash;';
 					}
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * register fields as sortable columns in admin list
+	 */
+	public function register_sortable_columns($columns) {
+
+		foreach ($this->boxes as $box) {
+			$fields = $box->get_fields();
+			foreach ($fields as $field) {
+				if($field instanceof InputField && $field->is_admin_column()) {
+					$columns[$field->get_meta_key()] = $field->get_meta_key();
+				}
+			}
+		}
+		return $columns;
+	}
+
+
+	/**
+	 * sort fields by value in admin list columns
+	 */
+	public function apply_sorting_columns($query) {
+
+		if (!is_admin() || !$query->is_main_query()) {
+			return;
+		}
+
+		if ($query->get('post_type') !== self::CPT) {
+			return;
+		}
+
+		$orderby = $query->get('orderby');
+		if (!$orderby) {
+			return;
+		}
+
+		foreach ($this->boxes as $box) {
+			$fields = $box->get_fields();
+			foreach ($fields as $field) {
+
+				if ($field instanceof InputField && $field->is_admin_column() && $orderby === $field->get_meta_key()) {
+
+					$input_type = $field->get_input_type();
+
+					$query->set('meta_key', $field->get_meta_key());
+					$query->set('orderby', 'meta_value');
+
+					switch ($input_type) {
+						case 'text':
+						case 'url':
+						case 'email':
+						case 'password':
+						case 'color':
+						case 'date':
+						case 'datetime-local':
+						case 'time':
+							$query->set('meta_key', $orderby);
+							$query->set('orderby', 'meta_value');
+							break;
+						case 'number':
+						case 'checkbox':
+							$query->set('meta_key', $orderby);
+							$query->set('orderby', 'meta_value_num');
+							break;
+					}
+
+					return;
 				}
 			}
 		}
