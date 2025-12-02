@@ -12,8 +12,9 @@ class InputField extends Field {
 	private $default_value;
 	private $required;
 	private $admin_column;
+	private $sort_column;
 
-	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', $default_value = '', $required = false, $admin_column = false) {
+	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', $default_value = '', $required = false, $admin_column = false, $sort_column = true) {
 
 		$allowed_types = ['text', 'number', 'url', 'email', 'password', 'checkbox', 'color', 'date', 'datetime-local', 'time'];
 		if (!in_array($input_type, $allowed_types, true)) {
@@ -26,6 +27,7 @@ class InputField extends Field {
 		$this->default_value = $default_value;
 		$this->required = $required;
 		$this->admin_column = $admin_column;
+		$this->sort_column = $sort_column;
 
 		parent::__construct($meta_key, $label);
 	}
@@ -36,6 +38,10 @@ class InputField extends Field {
 
 	public function is_admin_column() {
 		return $this->admin_column;
+	}
+
+	public function is_sortable_column() {
+		return $this->sort_column;
 	}
 
 	public function save($post_id) {

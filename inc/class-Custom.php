@@ -20,6 +20,7 @@ class Custom {
 
 	public const CPT = 'alesagglo_custom';
 	public const TAXO = 'alesagglo_custom_category';
+	private const SORT_META = self::CPT.'_sort_meta';
 	private const PATH = AEC_PATH;
 	private const PREFIX = AEC_PREFIX;
 	private array $boxes = array();
@@ -141,7 +142,9 @@ class Custom {
 			add_filter('manage_'.self::CPT.'_posts_columns', array($this, 'register_admin_columns'));
 			add_action('manage_'.self::CPT.'_posts_custom_column', array($this, 'display_admin_columns'), 10, 2);
 			add_filter('manage_edit-'.self::CPT.'_sortable_columns', array($this, 'register_sortable_columns'));
-			add_action('pre_get_posts', array($this, 'apply_sorting_columns'));
+			add_action('pre_get_posts', array($this, 'prepare_sorting_columns'));
+			add_filter('posts_join', array($this, 'add_leftjoin_sortmeta'), 10, 2);
+			add_filter('posts_orderby', array($this, 'set_orderby_sortmeta'), 10, 2);
 
 			// home
 			add_filter('get_pages', array($this, 'allow_define_as_home'), 10, 2);
@@ -231,6 +234,9 @@ class Custom {
 	 * display field values in new columns in admin list
 	 */
 	public function display_admin_columns($column_name, $post_id) {
+		if (!is_admin()) {
+			return;
+		}
 
 		foreach ($this->boxes as $box) {
 			$fields = $box->get_fields();
@@ -287,7 +293,7 @@ class Custom {
 		foreach ($this->boxes as $box) {
 			$fields = $box->get_fields();
 			foreach ($fields as $field) {
-				if($field instanceof InputField && $field->is_admin_column()) {
+				if($field instanceof InputField && $field->is_admin_column() && $field->is_sortable_column()) {
 					$columns[$field->get_meta_key()] = $field->get_meta_key();
 				}
 			}
@@ -297,10 +303,9 @@ class Custom {
 
 
 	/**
-	 * sort fields by value in admin list columns
+	 * prepare sorting on fields columns in admin list
 	 */
-	public function apply_sorting_columns($query) {
-
+	public function prepare_sorting_columns($query) {
 		if (!is_admin() || !$query->is_main_query()) {
 			return;
 		}
@@ -318,12 +323,9 @@ class Custom {
 			$fields = $box->get_fields();
 			foreach ($fields as $field) {
 
-				if ($field instanceof InputField && $field->is_admin_column() && $orderby === $field->get_meta_key()) {
+				if ($field instanceof InputField && $field->is_admin_column() && $field->is_sortable_column() && $orderby === $field->get_meta_key()) {
 
 					$input_type = $field->get_input_type();
-
-					$query->set('meta_key', $field->get_meta_key());
-					$query->set('orderby', 'meta_value');
 
 					switch ($input_type) {
 						case 'text':
@@ -334,13 +336,12 @@ class Custom {
 						case 'date':
 						case 'datetime-local':
 						case 'time':
-							$query->set('meta_key', $orderby);
-							$query->set('orderby', 'meta_value');
+							$query->set(self::SORT_META, $orderby);
 							break;
 						case 'number':
 						case 'checkbox':
-							$query->set('meta_key', $orderby);
-							$query->set('orderby', 'meta_value_num');
+							$query->set(self::SORT_META, $orderby);
+							$query->set(self::SORT_META.'_numeric', true);
 							break;
 					}
 
@@ -348,6 +349,40 @@ class Custom {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * add left join on field columns in admin list
+	 */
+	public function add_leftjoin_sortmeta($join, $query) {
+		$alias = $query->get(self::SORT_META);
+		if (!$alias) {
+			return $join;
+		}
+
+		global $wpdb;
+
+		$join .= " LEFT JOIN {$wpdb->postmeta} AS ".self::SORT_META." ON ({$wpdb->posts}.ID = ".self::SORT_META.".post_id AND ".self::SORT_META.".meta_key = '{$alias}')";
+		return $join;
+	}
+
+
+	/**
+	 * define order by on field columns in admin list
+	 */
+	public function set_orderby_sortmeta($orderby_sql, $query) {
+		$alias = $query->get(self::SORT_META);
+		if (!$alias) {
+			return $orderby_sql;
+		}
+
+		global $wpdb;
+
+		$order = strtoupper($query->get('order')) === 'ASC' ? 'ASC' : 'DESC';
+		$meta_value = $query->get(self::SORT_META.'_numeric') ? self::SORT_META.".meta_value+0" : self::SORT_META.".meta_value";
+		$orderby_sql = " (".self::SORT_META.".meta_value IS NULL) ASC, {$meta_value} {$order}, {$wpdb->posts}.ID ASC ";
+		return $orderby_sql;
 	}
 
 
