@@ -11,6 +11,7 @@ require_once AEC_PATH . 'inc/class-AttachmentField.php';
 require_once AEC_PATH . 'inc/class-PostField.php';
 
 use AlesAggloEmptyCustom\Metabox;
+use AlesAggloEmptyCustom\Field;
 use AlesAggloEmptyCustom\InputField;
 use AlesAggloEmptyCustom\TextareaField;
 use AlesAggloEmptyCustom\AttachmentField;
@@ -34,6 +35,14 @@ class Custom {
 		$this->register_post_type();
 		$this->define_metabox();
 		$this->register_hooks();
+	}
+
+
+	/**
+	 * add metabox
+	 */
+	public function add_box(Metabox $box) {
+		$this->boxes[$box->get_id()] = $box;
 	}
 
 
@@ -81,6 +90,7 @@ class Custom {
 		register_post_type(self::CPT, $args);
 	}
 
+
 	/**
 	 * register custom taxonomy
 	 */
@@ -122,9 +132,12 @@ class Custom {
 	 * define metabox
 	 */
 	public function define_metabox() {
-		$metabox = new Metabox('custom_metabox_sample', 'Sample Box', self::CPT);
-		$metabox->add_field(new InputField('custom_field_sample', 'Sample Field', 'text', '', '', false, true));
-		$this->boxes[] = $metabox;
+		$samplebox = new Metabox('custom_metabox_sample', 'Sample Box', self::CPT);
+		$samplebox->add_field(new InputField('custom_field_sample_text', 'Sample Text', 'text', '', '', false, true, false));
+		$samplebox->add_field(new InputField('custom_field_sample_number', 'Sample Number', 'number', '', '', false, true));
+		$emptybox = new Metabox('custom_metabox_empty', 'Empty Box', self::CPT);
+		$this->add_box($samplebox);
+		$this->add_box($emptybox);
 	}
 
 
@@ -218,9 +231,9 @@ class Custom {
 	 */
 	public function register_admin_columns($columns) {
 
-		foreach ($this->boxes as $box) {
+		foreach ($this->boxes as $bid => $box) {
 			$fields = $box->get_fields();
-			foreach ($fields as $field) {
+			foreach ($fields as $fid => $field) {
 				if($field instanceof InputField && $field->is_admin_column()) {
 					$columns[$field->get_meta_key()] = $field->get_label();
 				}
@@ -238,9 +251,9 @@ class Custom {
 			return;
 		}
 
-		foreach ($this->boxes as $box) {
+		foreach ($this->boxes as $bid => $box) {
 			$fields = $box->get_fields();
-			foreach ($fields as $field) {
+			foreach ($fields as $fid => $field) {
 				if($field instanceof InputField && $field->is_admin_column() && $column_name === $field->get_meta_key()) {
 
 					$input_type = $field->get_input_type();
@@ -290,9 +303,9 @@ class Custom {
 	 */
 	public function register_sortable_columns($columns) {
 
-		foreach ($this->boxes as $box) {
+		foreach ($this->boxes as $bid => $box) {
 			$fields = $box->get_fields();
-			foreach ($fields as $field) {
+			foreach ($fields as $fid => $field) {
 				if($field instanceof InputField && $field->is_admin_column() && $field->is_sortable_column()) {
 					$columns[$field->get_meta_key()] = $field->get_meta_key();
 				}
@@ -319,9 +332,9 @@ class Custom {
 			return;
 		}
 
-		foreach ($this->boxes as $box) {
+		foreach ($this->boxes as $bid => $box) {
 			$fields = $box->get_fields();
-			foreach ($fields as $field) {
+			foreach ($fields as $fid => $field) {
 
 				if ($field instanceof InputField && $field->is_admin_column() && $field->is_sortable_column() && $orderby === $field->get_meta_key()) {
 

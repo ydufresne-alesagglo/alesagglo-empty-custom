@@ -7,12 +7,12 @@ namespace AlesAggloEmptyCustom;
 
 class InputField extends Field {
 
-	private $input_type;
-	private $placeholder;
-	private $default_value;
-	private $required;
-	private $admin_column;
-	private $sort_column;
+	protected $input_type;
+	protected $placeholder;
+	protected $default_value;
+	protected $required;
+	protected $admin_column;
+	protected $sort_column;
 
 	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', $default_value = '', $required = false, $admin_column = false, $sort_column = true) {
 
@@ -34,6 +34,18 @@ class InputField extends Field {
 
 	public function get_input_type() {
 		return $this->input_type;
+	}
+
+	public function get_placeholder() {
+		return $this->placeholder;
+	}
+
+	public function get_default_value() {
+		return $this->default_value;
+	}
+
+	public function is_required() {
+		return $this->required;
 	}
 
 	public function is_admin_column() {
@@ -96,20 +108,21 @@ class InputField extends Field {
 		}
 	}
 
-	public function render_html($post) {
-		if ($this->input_type === false) return;
+	public function default_render($post) {
+		$input_type = $this->get_input_type();
+		if ($input_type === false) return;
 
-		$value = get_post_meta($post->ID, $this->meta_key, true);
-
+		$meta_key = $this->get_meta_key();
+		$value = get_post_meta($post->ID, $meta_key, true);
 		if ($value === '' && $this->default_value !== '') {
 			$value = $this->default_value;
 		}
 
 		$html = '<div class="'.parent::PREFIX.'input-field">';
-		$html .= '<label for="' . esc_attr($this->meta_key) . '">' . esc_html($this->label) . '</label>&nbsp;';
-		$html .= '<input type="' . esc_attr($this->input_type) . '" name="' . esc_attr($this->meta_key) . '" id="' . esc_attr($this->meta_key) . '"';
-		$html .= ($this->input_type == 'checkbox' ? ($value ? ' checked' : '') : ' value="' . esc_attr($value) . '" placeholder="' . esc_attr($this->placeholder) . '"');
-		$html .= $this->required ? ' required' : '';
+		$html .= '<label for="' . esc_attr($meta_key) . '">' . esc_html($this->get_label()) . '</label>&nbsp;';
+		$html .= '<input type="' . esc_attr($input_type) . '" name="' . esc_attr($meta_key) . '" id="' . esc_attr($meta_key) . '"';
+		$html .= ($input_type == 'checkbox' ? ($value ? ' checked' : '') : ' value="' . esc_attr($value) . '" placeholder="' . esc_attr($this->get_placeholder()) . '"');
+		$html .= $this->is_required() ? ' required' : '';
 		$html .= '>';
 		$html .= '</div>';
 

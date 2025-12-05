@@ -24,17 +24,18 @@ class TextareaField extends Field {
 		}
 	}
 
-	public function render_html($post) {
-		$value = get_post_meta($post->ID, $this->meta_key, true);
+	public function default_render($post) {
+		$meta_key = $this->get_meta_key();
+		$value = get_post_meta($post->ID, $meta_key, true);
 
 		$html = '<div class="'.parent::PREFIX.'textarea-field">';
-		$html .= '<label for="' . esc_attr($this->meta_key) . '">' . esc_html($this->label) . '</label><br>';
+		$html .= '<label for="' . esc_attr($meta_key) . '">' . esc_html($this->get_label()) . '</label><br>';
 		ob_start();
 		wp_editor(
 			$value,
-			$this->meta_key,
+			$meta_key,
 			array(
-				'textarea_name' => $this->meta_key,
+				'textarea_name' => $meta_key,
 				'media_buttons' => false,
 				'textarea_rows' => 10,
 				'wpautop' => false,

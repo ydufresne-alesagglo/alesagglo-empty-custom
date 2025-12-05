@@ -11,10 +11,18 @@ abstract class Field {
 
 	protected $meta_key;
 	protected $label;
+	private $render_callback;
 
 	public function __construct(string $meta_key, string $label) {
 		$this->meta_key = $meta_key;
 		$this->label = $label;
+		$this->render_callback = [$this, 'default_render'];
+	}
+
+	public function set_render_callback(callable $render_callback) {
+		if (is_callable($render_callback)) {
+			$this->render_callback = $render_callback;
+		}
 	}
 
 	function get_meta_key() {
@@ -39,8 +47,13 @@ abstract class Field {
 	}
 
 	public function render_html($post) {
-		$value = get_post_meta($post->ID, $this->meta_key, true);
+		return call_user_func($this->render_callback, $post, $this);
+	}
 
-		return '<div class="'.self::PREFIX.'field"><span>' . esc_attr($this->label) . ' (' . esc_attr($this->meta_key) . ') : ' . esc_attr($value) . '</span></div>';
+	public function default_render($post) {
+		$meta_key = $this->get_meta_key();
+		$value = get_post_meta($post->ID, $meta_key, true);
+
+		return '<div class="'.self::PREFIX.'field"><span>' . esc_attr($this->get_label()) . ' (' . esc_attr($meta_key) . ') : ' . esc_attr($value) . '</span></div>';
 	}
 }
