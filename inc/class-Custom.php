@@ -137,9 +137,9 @@ class Custom {
 		$samplebox->add_field(new InputField('custom_field_sample_number', 'Sample Number', 'number', '', '', false, true));
 		$redesignbox = new Metabox('custom_metabox_redesign', 'Redesign Box', self::CPT);
 		$redesignfield = new InputField('custom_field_redesign_text', 'Redesign Field', 'text');
-		$redesignfield->set_render_callback(array($this, 'render_inputfield'));
+		$redesignfield->set_render_callback(array($this, 'render_redesign_inputfield'));
 		$redesignbox->add_field($redesignfield);
-		$redesignbox->set_render_callback(array($this, 'render_metabox'));
+		$redesignbox->set_render_callback(array($this, 'render_redesign_metabox'));
 		$this->add_box($samplebox);
 		$this->add_box($redesignbox);
 	}
@@ -148,13 +148,15 @@ class Custom {
 	/**
 	 * redesign metabox content
 	 */
-	public function render_metabox($post, Metabox $metabox) {
+	public function render_redesign_metabox($post, Metabox $metabox) {
+/*
 		// V1
-		$metabox = $this->boxes['custom_metabox_redesign'];
 		$html = '<p><strong>Redesign Metabox Content</strong></p>'.
 			$metabox->default_render($post);
-/*
+*/
+
 		//V2
+		$metabox = $this->boxes['custom_metabox_redesign'];
 		$id = $metabox->get_id();
 		$html = wp_nonce_field(self::PREFIX . $id . '_action', self::PREFIX . $id . '_nonce', true, false);
 
@@ -164,7 +166,7 @@ class Custom {
 		$html .= $metabox->get_fields()['custom_field_redesign_text']->render_html($post);
 
 		$html .= '</div>';
-*/
+
 		return $html;
 	}
 
@@ -172,9 +174,10 @@ class Custom {
 	/**
 	 * redesign input field content
 	 */
-	public function render_inputfield($post, Field $field) {
-		return '<p>Redesign Input Field Content</p>'.
+	public function render_redesign_inputfield($post, Field $field) {
+		$html = '<p>Redesign Input Field Content</p>'.
 			$field->default_render($post);
+		return $html;
 	}
 
 
