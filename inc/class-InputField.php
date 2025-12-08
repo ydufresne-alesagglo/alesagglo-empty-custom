@@ -114,8 +114,8 @@ class InputField extends Field {
 
 		$meta_key = $this->get_meta_key();
 		$value = get_post_meta($post->ID, $meta_key, true);
-		if ($value === '' && $this->default_value !== '') {
-			$value = $this->default_value;
+		if ($value === '' && $this->get_default_value() !== '') {
+			$value = $this->get_default_value();
 		}
 
 		$html = '<div class="'.parent::PREFIX.'input-field">';
