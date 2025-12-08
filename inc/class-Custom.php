@@ -135,9 +135,46 @@ class Custom {
 		$samplebox = new Metabox('custom_metabox_sample', 'Sample Box', self::CPT);
 		$samplebox->add_field(new InputField('custom_field_sample_text', 'Sample Text', 'text', '', '', false, true, false));
 		$samplebox->add_field(new InputField('custom_field_sample_number', 'Sample Number', 'number', '', '', false, true));
-		$emptybox = new Metabox('custom_metabox_empty', 'Empty Box', self::CPT);
+		$redesignbox = new Metabox('custom_metabox_redesign', 'Redesign Box', self::CPT);
+		$redesignfield = new InputField('custom_field_redesign_text', 'Redesign Field', 'text');
+		$redesignfield->set_render_callback(array($this, 'render_inputfield'));
+		$redesignbox->add_field($redesignfield);
+		$redesignbox->set_render_callback(array($this, 'render_metabox'));
 		$this->add_box($samplebox);
-		$this->add_box($emptybox);
+		$this->add_box($redesignbox);
+	}
+
+
+	/**
+	 * redesign metabox content
+	 */
+	public function render_metabox($post, Metabox $metabox) {
+		// V1
+		$metabox = $this->boxes['custom_metabox_redesign'];
+		$html = '<p><strong>Redesign Metabox Content</strong></p>'.
+			$metabox->default_render($post);
+/*
+		//V2
+		$id = $metabox->get_id();
+		$html = wp_nonce_field(self::PREFIX . $id . '_action', self::PREFIX . $id . '_nonce', true, false);
+
+		$html .= '<div class="'.self::PREFIX.'redesign-metabox">';
+		$html .= '<p><strong>Redesign Metabox Content</strong></p>';
+
+		$html .= $metabox->get_fields()['custom_field_redesign_text']->render_html($post);
+
+		$html .= '</div>';
+*/
+		return $html;
+	}
+
+
+	/**
+	 * redesign input field content
+	 */
+	public function render_inputfield($post, Field $field) {
+		return '<p>Redesign Input Field Content</p>'.
+			$field->default_render($post);
 	}
 
 
