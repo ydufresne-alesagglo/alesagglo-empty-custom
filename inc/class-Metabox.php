@@ -63,7 +63,7 @@ class Metabox {
 		$html = wp_nonce_field(self::PREFIX . $id . '_action', self::PREFIX . $id . '_nonce', true, false);
 
 		$html .= '<div class="'.self::PREFIX.'custom-metabox">';
-		foreach ($this->get_fields() as $field) {
+		foreach ($this->get_fields() as $fid => $field) {
 			$html .= $field->render_html($post);
 		}
 		$html .= '</div>';
@@ -82,7 +82,7 @@ class Metabox {
 			return;
 		}
 
-		foreach ($this->fields as $field) {
+		foreach ($this->get_fields() as $fid => $field) {
 			$field->save($post_id);
 		}
 	}
