@@ -47,15 +47,15 @@ class Metabox {
 		add_meta_box(
 			$this->id,
 			$this->title,
-			[$this, 'render_meta_box'],
+			[$this, 'render_html'],
 			$this->post_type,
 			'normal',
 			'default'
 		);
 	}
 
-	public function render_meta_box($post) {
-		echo call_user_func($this->render_callback, $post);
+	public function render_html($post) {
+		echo call_user_func($this->render_callback, $post, $this);
 	}
 
 	public function default_render($post) {
