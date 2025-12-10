@@ -125,12 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 
 			timer = setTimeout(async () => {
-				const url = `/wp-json/wp/v2/${postType}?search=${encodeURIComponent(term)}&per_page=12`;
+				const url = `/wp/v2/${postType}?search=${encodeURIComponent(term)}&search_columns=post_title&orderby=modified&order=desc&status[]=publish&status[]=future&per_page=12`;
 				try {
-					const res = await fetch(url);
-					if (!res.ok) return;
-
-					const data = await res.json();
+					const data = await wp.apiFetch({ path: url });
 					results.innerHTML = '';
 
 					if (data.length === 0) {
