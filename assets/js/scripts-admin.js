@@ -1,11 +1,11 @@
 // scripts admin ales agglo empty custom
 
+const prefix = (aec_settings_admin && typeof aec_settings_admin == 'object' && aec_settings_admin.prefix) ? aec_settings_admin.prefix : '';
+
 /**
  * Attachment field script
  */
 document.addEventListener("DOMContentLoaded", function () {
-
-	const prefix = (aec_settings_admin && typeof aec_settings_admin == 'object' && aec_settings_admin.prefix) ? aec_settings_admin.prefix : '';
 
 	const fields = document.querySelectorAll('.'+prefix+'attachment-field');
 
@@ -69,8 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 document.addEventListener("DOMContentLoaded", function () {
 
-	const prefix = (aec_settings_admin && typeof aec_settings_admin == 'object' && aec_settings_admin.prefix) ? aec_settings_admin.prefix : '';
-
 	const fields = document.querySelectorAll('.'+prefix+'post-field');
 
 	fields.forEach(field => {
@@ -89,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		selectBtn.addEventListener('click', function (e) {
 			e.preventDefault();
 			const isVisible = container.style.display === 'block';
+			closeAllSearchContainers();
 			container.style.display = isVisible ? 'none' : 'block';
 			if (!isVisible) { // visibility just changed to visible
 				search.focus();
@@ -164,3 +163,17 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 });
+
+function closeAllSearchContainers() {
+	const fields = document.querySelectorAll('.'+prefix+'post-field');
+	fields.forEach(field => {
+		const container = field.querySelector('.' + prefix + 'post-search-container');
+		if (container.style.display === 'block') {
+			const search = field.querySelector('.' + prefix + 'post-search-input');
+			const results = field.querySelector('.' + prefix + 'post-search-results');
+			container.style.display = 'none';
+			results.innerHTML = '';
+			search.value = '';
+		}
+	});
+};

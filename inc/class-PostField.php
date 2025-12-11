@@ -10,7 +10,7 @@ class PostField extends Field {
 	protected $post_type;
 	protected $placeholder;
 
-	public function __construct(string $meta_key, string $label, string $post_type = 'post', string $placeholder = '') {
+	public function __construct(string $meta_key, string $label, string $placeholder = '', string $post_type = 'posts') {
 
 		$this->post_type = $post_type;
 		$this->placeholder = $placeholder;

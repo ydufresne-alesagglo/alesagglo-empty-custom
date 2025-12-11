@@ -14,7 +14,7 @@ class InputField extends Field {
 	protected $admin_column;
 	protected $sort_column;
 
-	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', $default_value = '', $required = false, $admin_column = false, $sort_column = true) {
+	public function __construct(string $meta_key, string $label, string $input_type = 'text', string $placeholder = '', string $default_value = '', bool $required = false, bool $admin_column = false, bool $sort_column = true) {
 
 		$allowed_types = ['text', 'number', 'url', 'email', 'password', 'checkbox', 'color', 'date', 'datetime-local', 'time'];
 		if (!in_array($input_type, $allowed_types, true)) {
