@@ -1,6 +1,6 @@
 // scripts admin ales agglo empty custom
 
-const prefix = (aec_settings_admin && typeof aec_settings_admin == 'object' && aec_settings_admin.prefix) ? aec_settings_admin.prefix : '';
+const prefix = 'aec_';
 
 /**
  * Attachment field script
