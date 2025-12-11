@@ -1,4 +1,5 @@
 // scripts admin ales agglo empty custom
+(() => { //IIFE begin
 
 const prefix = 'aec_';
 
@@ -177,3 +178,5 @@ function closeAllSearchContainers() {
 		}
 	});
 };
+
+})(); //IIFE end
