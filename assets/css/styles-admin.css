@@ -24,6 +24,11 @@
 	margin-right: 0.6rem;
 	cursor: pointer;
 }
+.aec_attachment-field-thumbnail img {
+	max-height: 200px;
+	width: auto;
+	display: block;
+}
 
 .aec_post-search-container {
 	border: 1px solid #ccc;

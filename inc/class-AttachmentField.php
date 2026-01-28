@@ -23,7 +23,7 @@ class AttachmentField extends Field {
 		$meta_key = $this->get_meta_key();
 		$value = get_post_meta($post->ID, $meta_key, true);
 
-		$link = ($value ? '<a href="' . esc_url(wp_get_attachment_url($value)) . '" target="_blank">' . esc_html(basename(get_attached_file($value))) . '</a>' : '');
+		$link = ($value ? '<a href="' . esc_url(wp_get_attachment_url($value)) . '" target="_blank">' . esc_html(basename(get_attached_file($value))) . '</a>' : '&nbsp;');
 
 		$allowed_types = $this->get_allowed_types();
 		$allowed_types_json = (!empty($allowed_types) ? htmlspecialchars(json_encode($allowed_types), ENT_QUOTES, 'UTF-8') : '');
@@ -31,6 +31,9 @@ class AttachmentField extends Field {
 		$html  = '<div class="'.parent::PREFIX.'attachment-field" data-meta-key="' . esc_attr($meta_key) . '" data-allowed-types="' . $allowed_types_json . '">';
 		$html .= '<label>' . esc_html($this->get_label()) . '</label>';
 		$html .= '<input type="hidden" name="' . esc_attr($meta_key) . '" id="'.parent::PREFIX.esc_attr($meta_key) . '" value="' . esc_attr($value) . '">';
+		if (wp_attachment_is_image($value)) {
+			$html .= '<span class="'.parent::PREFIX.'attachment-field-thumbnail"><a href="' . esc_url(wp_get_attachment_url($value)) . '" target="_blank">' . wp_get_attachment_image($value, 'medium', false) . '</a></span>';
+		}
 		$html .= '<span class="'.parent::PREFIX.'attachment-field-link">'.$link.'</span>';
 		$html .= '<button type="button" class="'.parent::PREFIX.'attachment-field-select">Select</button>';
 		$html .= '<button type="button" class="'.parent::PREFIX.'attachment-field-remove">Remove</button>';

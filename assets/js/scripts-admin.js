@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const link = field.querySelector('.'+prefix+'attachment-field-link');
 		const selectBtn = field.querySelector('.'+prefix+'attachment-field-select');
 		const removeBtn = field.querySelector('.'+prefix+'attachment-field-remove');
+		let thumbnail = field.querySelector('.'+prefix+'attachment-field-thumbnail');
 
 		let types = null;
 		if (allowedTypes) {
@@ -51,6 +52,16 @@ document.addEventListener("DOMContentLoaded", function () {
 				const attachment = frame.state().get('selection').first().toJSON();
 				inputMetaKey.value = attachment.id;
 				link.innerHTML = `<a href="${attachment.url}" target="_blank">${attachment.filename}</a>`;
+				if (attachment.type === 'image') {
+					if (!thumbnail) {
+						console.log('Creating thumbnail container');
+						thumbnail = document.createElement('span');
+						thumbnail.className = prefix + 'attachment-field-thumbnail';
+						link.parentNode.insertBefore(thumbnail, link);
+					}
+					thumbnail.innerHTML = `<a href="${attachment.url}" target="_blank"><img src="${attachment.sizes.medium.url}" style="max-height:200px;width:auto;display:block;" /></a>`;
+				}
+
 			});
 
 			frame.open();
@@ -60,6 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			e.preventDefault();
 			inputMetaKey.value = '';
 			link.innerHTML = '&nbsp;';
+			if (thumbnail) {
+				thumbnail.innerHTML = '';
+			}
 		});
 	});
 });
