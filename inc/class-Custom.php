@@ -20,6 +20,8 @@ use AlesAggloEmptyCustom\PostField;
 class Custom {
 
 	public const CPT = 'alesagglo_custom';
+	public const SLUG = 'customs';
+	const PUBLICLY_QUERYABLE = false;
 	public const TAXO = 'alesagglo_custom_category';
 	private const SORT_META = self::CPT.'_sort_meta';
 	private const PATH = AEC_PATH;
@@ -73,6 +75,7 @@ class Custom {
 			'label'					=> 'Customs',
 			'description'			=> 'Customs, etc...',
 			'public'				=> true,
+			'publicly_queryable'	=> self::PUBLICLY_QUERYABLE,
 			'show_ui'				=> true,
 			'show_in_menu'			=> true,
 			'show_in_nav_menus'		=> true,
@@ -80,7 +83,7 @@ class Custom {
 			'has_archive'			=> true,
 			'hierarchical'			=> false,
 			'exclude_from_search'	=> false,
-			'rewrite'				=> array('slug' => 'customs', 'with_front' => false),
+			'rewrite'				=> array('slug' => self::SLUG, 'with_front' => false),
 			'capability_type'		=> 'post',
 			'supports'				=> array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields'),
 			'taxonomies'			=> array(self::TAXO),
@@ -120,7 +123,7 @@ class Custom {
 			'show_in_nav_menus'	=> true,
 			'show_in_rest'		=> true,
 			'hierarchical'		=> true,
-			'rewrite'			=> array('slug' => 'customs/categorie', 'with_front' => false),
+			'rewrite'			=> array('slug' => self::SLUG.'/categorie', 'with_front' => false),
 		);
 
 		register_taxonomy(self::TAXO, self::CPT, $args);
@@ -209,10 +212,14 @@ class Custom {
 		add_action('template_redirect', array($this, 'redirect_home_to_root'));
 
 		// template
-		add_filter('single_template', array($this, 'load_template'));
-		add_filter('archive_template', array($this, 'load_template'));
-		add_filter('taxonomy_template', array($this, 'load_template'));
-		add_filter('template_include', array($this, 'load_template'));
+		if (self::PUBLICLY_QUERYABLE) {
+			add_filter('single_template', array($this, 'load_template'));
+			add_filter('archive_template', array($this, 'load_template'));
+			add_filter('taxonomy_template', array($this, 'load_template'));
+			add_filter('template_include', array($this, 'load_template'));
+		} else {
+			add_action('template_redirect', array($this, 'force_404_template'));
+		}
 	}
 
 
@@ -504,6 +511,21 @@ class Custom {
 				wp_redirect(home_url('/'), 301);
 				exit;
 			}
+		}
+	}
+
+
+	/**
+	 * force 404 template
+	 */
+	public function force_404_template() {
+		global $wp_query;
+
+		$current_path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+		if ($current_path === self::SLUG || strpos($current_path, self::SLUG . '/') === 0) {
+			$wp_query->set_404();
+			status_header(404);
+			nocache_headers();
 		}
 	}
 
