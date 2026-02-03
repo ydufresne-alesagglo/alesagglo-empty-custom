@@ -5,10 +5,10 @@
  */
 if ( ! function_exists( 'is_custom_post_type' ) ) {
 	function is_custom_post_type( $post = NULL ) {
-		$all_custom_post_types = get_post_types( array ( '_builtin' => FALSE ) );
+		$all_custom_post_types = get_post_types( array ( '_builtin' => false ) );
 
 		if ( empty ( $all_custom_post_types ) )
-			return FALSE;
+			return false;
 
 		if ( is_archive() && !$post ) {
 			$current_post_type = get_query_var( 'post_type' );
@@ -17,7 +17,7 @@ if ( ! function_exists( 'is_custom_post_type' ) ) {
 		}
 
 		if ( !$current_post_type )
-			return FALSE;
+			return false;
 
 		$custom_types = array_keys( $all_custom_post_types );
 
