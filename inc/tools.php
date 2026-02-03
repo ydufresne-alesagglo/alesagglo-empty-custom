@@ -10,11 +10,16 @@ if ( ! function_exists( 'is_custom_post_type' ) ) {
 		if ( empty ( $all_custom_post_types ) )
 			return FALSE;
 
-		$custom_types      = array_keys( $all_custom_post_types );
-		$current_post_type = get_post_type( $post );
+		if ( is_archive() && !$post ) {
+			$current_post_type = get_query_var( 'post_type' );
+		} else {
+			$current_post_type = get_post_type( $post );
+		}
 
 		if ( !$current_post_type )
 			return FALSE;
+
+		$custom_types = array_keys( $all_custom_post_types );
 
 		return in_array( $current_post_type, $custom_types );
 	}
