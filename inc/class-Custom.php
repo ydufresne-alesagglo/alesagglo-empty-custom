@@ -21,7 +21,7 @@ class Custom {
 
 	public const CPT = 'alesagglo_custom';
 	public const SLUG = 'customs';
-	const PUBLICLY_QUERYABLE = false;
+	const PUBLICLY_QUERYABLE = true;
 	public const TAXO = 'alesagglo_custom_category';
 	private const SORT_META = self::CPT.'_sort_meta';
 	private const PATH = AEC_PATH;
@@ -110,6 +110,8 @@ class Custom {
 			'view_item'			=> 'Voir la catégorie',
 			'update_item'		=> 'Mettre à jour la catégorie',
 			'search_items'		=> 'Rechercher une catégorie',
+			'parent_item'		=> 'Catégorie parente',
+			'parent_item_colon'	=> 'Catégorie parente :',
 		);
 
 		$args = array(
@@ -123,11 +125,11 @@ class Custom {
 			'show_in_nav_menus'	=> true,
 			'show_in_rest'		=> true,
 			'hierarchical'		=> true,
-			'rewrite'			=> array('slug' => self::SLUG.'/categorie', 'with_front' => false),
+			'rewrite'			=> array('slug' => self::SLUG.'/categorie', 'with_front' => false, 'hierarchical' => true),
 		);
 
 		register_taxonomy(self::TAXO, self::CPT, $args);
-		register_taxonomy_for_object_type(self::TAXO, self::CPT);
+		// register_taxonomy_for_object_type(self::TAXO, self::CPT);
 	}
 
 
