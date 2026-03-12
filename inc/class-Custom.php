@@ -218,7 +218,7 @@ class Custom {
 			add_filter('single_template', array($this, 'load_template'));
 			add_filter('archive_template', array($this, 'load_template'));
 			add_filter('taxonomy_template', array($this, 'load_template'));
-			add_filter('template_include', array($this, 'load_template'));
+			// add_filter('template_include', array($this, 'load_template'));
 		} else {
 			add_action('template_redirect', array($this, 'force_404_template'));
 		}
