@@ -21,8 +21,8 @@ class Custom {
 
 	public const CPT = 'alesagglo_custom';
 	public const SLUG = 'customs';
-	const PUBLICLY_QUERYABLE = true;
 	public const TAXO = 'alesagglo_custom_category';
+	private const PUBLICLY_QUERYABLE = true;
 	private const SORT_META = self::CPT.'_sort_meta';
 	private const PATH = AEC_PATH;
 	private const PREFIX = AEC_PREFIX;

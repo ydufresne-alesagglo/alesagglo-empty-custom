@@ -78,7 +78,7 @@ function aec_register_admin_scripts() {
 add_action('init', 'aec_init');
 function aec_init() {
 	if (class_exists('Custom')) {
-		$custom = new Custom();
+		new Custom();
 	}
 }
 
