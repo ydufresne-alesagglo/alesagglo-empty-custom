@@ -11,6 +11,15 @@ class TextareaField extends Field {
 		parent::__construct($meta_key, $label);
 	}
 
+	public function register($post_type) {
+		register_post_meta($post_type, $this->meta_key, array(
+			'type' => 'string',
+			'single' => true,
+			'show_in_rest' => true,
+			'auth_callback' => '__return_false',
+		));
+	}
+
 	public function save($post_id) {
 		if (!isset($_POST[$this->meta_key])) {
 			return;

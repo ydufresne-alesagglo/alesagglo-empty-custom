@@ -37,6 +37,7 @@ class Metabox {
 
 	public function add_field(Field $field) {
 		$this->fields[$field->get_meta_key()] = $field;
+		$field->register($this->post_type);
 	}
 
 	public function get_fields(): array {

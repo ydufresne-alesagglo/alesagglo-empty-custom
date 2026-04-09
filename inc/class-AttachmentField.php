@@ -19,6 +19,28 @@ class AttachmentField extends Field {
 		return $this->allowed_types;
 	}
 
+	public function register($post_type) {
+		register_post_meta($post_type, $this->meta_key, array(
+			'type' => 'number',
+			'single' => true,
+			'show_in_rest' => true,
+			'auth_callback' => '__return_false',
+		));
+	}
+
+	public function save($post_id) {
+		if (!isset($_POST[$this->meta_key])) {
+			return;
+		}
+
+		$value = intval( $_POST[$this->meta_key] );
+		if ($value <= 0) {
+			delete_post_meta($post_id, $this->meta_key);
+		} else {
+			update_post_meta($post_id, $this->meta_key, $value);
+		}
+	}
+
 	public function default_render($post) {
 		$meta_key = $this->get_meta_key();
 		$value = get_post_meta($post->ID, $meta_key, true);
@@ -28,7 +50,7 @@ class AttachmentField extends Field {
 		$allowed_types = $this->get_allowed_types();
 		$allowed_types_json = (!empty($allowed_types) ? htmlspecialchars(json_encode($allowed_types), ENT_QUOTES, 'UTF-8') : '');
 
-		$html  = '<div class="'.parent::PREFIX.'attachment-field" data-meta-key="' . esc_attr($meta_key) . '" data-allowed-types="' . $allowed_types_json . '">';
+		$html = '<div class="'.parent::PREFIX.'attachment-field" data-meta-key="' . esc_attr($meta_key) . '" data-allowed-types="' . $allowed_types_json . '">';
 		$html .= '<label>' . esc_html($this->get_label()) . '</label>';
 		$html .= '<input type="hidden" name="' . esc_attr($meta_key) . '" id="'.parent::PREFIX.esc_attr($meta_key) . '" value="' . esc_attr($value) . '">';
 		if (wp_attachment_is_image($value)) {

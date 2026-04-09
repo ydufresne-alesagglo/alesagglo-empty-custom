@@ -56,6 +56,22 @@ class InputField extends Field {
 		return $this->sort_column;
 	}
 
+	public function register($post_type) {
+		if ($this->input_type === false) return;
+
+		$register_type = 'string';
+		if ($this->input_type == 'checkbox' || $this->input_type == 'number') {
+			$register_type = 'number';
+		}
+
+		register_post_meta($post_type, $this->meta_key, array(
+			'type' => $register_type,
+			'single' => true,
+			'show_in_rest' => true,
+			'auth_callback' => '__return_false',
+		));
+	}
+
 	public function save($post_id) {
 		if ($this->input_type === false) return;
 
@@ -99,7 +115,7 @@ class InputField extends Field {
 			return;
 		}
 
-		$allowed = ['sup' => [], 'sub' => []];
+		$allowed = ['sup' => [], 'sub' => [], 'em' => [], 'strong' => []];
 		$value = wp_kses( wp_unslash($_POST[$this->meta_key]), $allowed );
 		if ($value === '') {
 			delete_post_meta($post_id, $this->meta_key);

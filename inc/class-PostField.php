@@ -7,23 +7,32 @@ namespace AlesAggloEmptyCustom;
 
 class PostField extends Field {
 
-	protected $post_type;
+	protected $linked_post_type;
 	protected $placeholder;
 
-	public function __construct(string $meta_key, string $label, string $placeholder = '', string $post_type = 'posts') {
+	public function __construct(string $meta_key, string $label, string $placeholder = '', string $linked_post_type = 'posts') {
 
-		$this->post_type = $post_type;
+		$this->linked_post_type = $linked_post_type;
 		$this->placeholder = $placeholder;
 		
 		parent::__construct($meta_key, $label);
 	}
 
-	public function get_post_type() {
-		return $this->post_type;
+	public function get_linked_post_type() {
+		return $this->linked_post_type;
 	}
 
 	public function get_placeholder() {
 		return $this->placeholder;
+	}
+
+	public function register($post_type) {
+		register_post_meta($post_type, $this->meta_key, array(
+			'type' => 'number',
+			'single' => true,
+			'show_in_rest' => true,
+			'auth_callback' => '__return_false',
+		));
 	}
 
 	public function save($post_id): void {
@@ -45,7 +54,7 @@ class PostField extends Field {
 
 		$link = ($value ? '<a href="' . esc_url(get_permalink($value)) . '" target="_blank">' . esc_html(get_the_title($value)) . '</a>' : '&nbsp;');
 
-		$html = '<div class="'.parent::PREFIX.'post-field" data-meta-key="' . esc_attr($meta_key) . '" data-post-type="' . esc_attr($this->get_post_type()) . '">';
+		$html = '<div class="'.parent::PREFIX.'post-field" data-meta-key="' . esc_attr($meta_key) . '" data-post-type="' . esc_attr($this->get_linked_post_type()) . '">';
 		$html .= '<label>' . esc_html($this->get_label()) . '</label>';
 		$html .= '<input type="hidden" name="' . esc_attr($meta_key) . '" id="'.parent::PREFIX.esc_attr($meta_key) . '" value="' . esc_attr($value) . '">';
 		$html .= '<span class="'.parent::PREFIX.'post-field-link">'.$link.'</span>';
